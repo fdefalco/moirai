@@ -1,0 +1,6 @@
+personId,genderConceptId,yearOfBirth,monthOfBirth,dayOfBirth,birthDatetime,raceConceptId,ethnicityConceptId,locationid,providerId,careSiteId,personSourceValue,genderSourcevalue,genderSourceConceptId,raceSourceValue,raceSourceConceptId,ethnicitySourceValue,ethnicitySourceConceptId
+100000,8507,2001,0,0,0,0,0,0,0,0,0,0,0,0,0,,0
+100001,8507,2001,0,0,0,0,0,0,0,0,0,0,0,0,0,,0
+100002,8507,2001,0,0,0,0,0,0,0,0,0,0,0,0,0,,0
+100003,8507,2001,0,0,0,0,0,0,0,0,0,0,0,0,0,,0
+100004,8532,2001,0,0,0,0,0,0,0,0,0,0,0,0,0,,0
