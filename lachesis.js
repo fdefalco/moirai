@@ -1,23 +1,23 @@
-function lachesis() {
-  var ObservationPeriod = require('./cdm/observationPeriod');
-  var VisitOccurrence = require('./cdm/visitOccurrence');
-  var observationPeriodId = 10000;
-  var visitOccurrenceId = 10000;
+function Lachesis() {
+	const ObservationPeriod = require('./cdm/observationPeriod');
+	const VisitOccurrence = require('./cdm/visitOccurrence');
+	let observationPeriodId = 10000;
+	let visitOccurrenceId = 10000;
 
-  this.measure = function(person) {
-    var observationPeriod = new ObservationPeriod();
-    observationPeriod.observationPeriodId = observationPeriodId++;
-    observationPeriod.personId = person.personId;
-    return observationPeriod;
-  };
+	this.measure = function (person) {
+		const observationPeriod = new ObservationPeriod();
+		observationPeriod.observationPeriodId = observationPeriodId++;
+		observationPeriod.personId = person.personId;
+		return observationPeriod;
+	};
 
-  this.apportionVisits = function(person, observationPeriod) {
-    // return drug exposures, condition occurrences, procedure occurrences, etc...
-    var visitOccurrence = new VisitOccurrence();
-    visitOccurrence.personId = person.personId;
-    visitOccurrence.visitOccurrenceId = visitOccurrenceId++;
-    return visitOccurrence;
-  }
-};
+	// Return drug exposures, condition occurrences, procedure occurrences, etc...
+	this.apportionVisits = function (person) {
+		const visitOccurrence = new VisitOccurrence();
+		visitOccurrence.personId = person.personId;
+		visitOccurrence.visitOccurrenceId = visitOccurrenceId++;
+		return visitOccurrence;
+	};
+}
 
-module.exports = new lachesis();
+module.exports = new Lachesis();

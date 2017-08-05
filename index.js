@@ -1,86 +1,91 @@
 #!/usr/bin/env node
 
-var commander = require('commander');
-var progress = require('cli-progress');
-var csv = require('csv');
-var fs = require('fs');
-var durations = require('durations');
+const fs = require('fs');
+const commander = require('commander');
+const progress = require('cli-progress');
+const csv = require('csv');
+const durations = require('durations');
 
-var clotho = require('./clotho.js');
-var lachesis = require('./lachesis.js');
-var atropos = require('./atropos.js');
+const clotho = require('./clotho.js');
+const lachesis = require('./lachesis.js');
+const atropos = require('./atropos.js');
 
 commander
-  .version('0.1.0')
-  .option('--personCount [100]', 'specify how many people default [100]', 100)
-  .parse(process.argv);
+	.version('0.1.0')
+	.option('--personCount [100]', 'specify how many people default [100]', 100)
+	.parse(process.argv);
 
-var stopwatch = durations.stopwatch();
+const stopwatch = durations.stopwatch();
 stopwatch.start();
 
-var maxBatchLength = 1000;
-var personBatch = [],
-  observationPeriodBatch = [],
-  deathBatch = [],
-  visitOccurrenceBatch = [];
+const maxBatchLength = 1000;
+const personBatch = [];
+const observationPeriodBatch = [];
+const deathBatch = [];
+const visitOccurrenceBatch = [];
 
-// configure the data assets we're generating so we don't have to repeat code sections
-var dataAssets = [{
-  "filename": "observationPeriod.csv",
-  "data": observationPeriodBatch
+const outputFolder = 'simulations/';
+
+// Configure the data assets we're generating so we don't have to repeat code sections
+const dataAssets = [{
+	filename: 'observationPeriod.csv',
+	data: observationPeriodBatch
 }, {
-  "filename": "person.csv",
-  "data": personBatch
+	filename: 'person.csv',
+	data: personBatch
 }, {
-  "filename": "death.csv",
-  "data": deathBatch
+	filename: 'death.csv',
+	data: deathBatch
 }, {
-  "filename": "visitOccurrence.csv",
-  "data": visitOccurrenceBatch
+	filename: 'visitOccurrence.csv',
+	data: visitOccurrenceBatch
 }];
 
-// perhaps warn about overwriting files and add an option to overwrite --overwrite
-dataAssets.forEach(function(d) {
-  if (fs.existsSync(d.filename)) {
-    fs.unlinkSync(d.filename);
-  }
-})
+// Perhaps warn about overwriting files and add an option to overwrite --overwrite
+dataAssets.forEach(d => {
+	if (fs.existsSync(outputFolder + d.filename)) {
+		fs.unlinkSync(outputFolder + d.filename);
+	}
+});
 
-var progressbar = new progress.Bar({
-  format: 'simulating [{bar}] {percentage}% | {value}/{total}'
+const progressbar = new progress.Bar({
+	format: 'simulating [{bar}] {percentage}% | {value}/{total}'
 }, progress.Presets.shades_classic);
 progressbar.start(commander.personCount, 0);
 
-for (var p = 0; p < commander.personCount; p++) {
-  var person = clotho.spin(person);
-  personBatch.push(person);
+for (let p = 0; p < commander.personCount; p++) {
+	const person = clotho.spin();
+	personBatch.push(person);
 
-  var observationPeriod = lachesis.measure(person);
-  observationPeriodBatch.push(observationPeriod);
+	const observationPeriod = lachesis.measure(person);
+	observationPeriodBatch.push(observationPeriod);
 
-  var visitOccurrence = lachesis.apportionVisits(person);
-  visitOccurrenceBatch.push(visitOccurrence);
+	const visitOccurrence = lachesis.apportionVisits(person);
+	visitOccurrenceBatch.push(visitOccurrence);
 
-  var death = atropos.shear(person, null);
-  deathBatch.push(death);
+	const death = atropos.shear(person, null);
+	deathBatch.push(death);
 
-  progressbar.update(p);
-  if (personBatch.length == maxBatchLength || p == commander.personCount - 1) {
-    dataAssets.forEach(function(d) {
-      csv.stringify(d.data, {
-        header: true
-      }, function(err, data) {
-        fs.appendFileSync(d.filename, data);
-        d.data = [];
-      });
-    });
-  }
+	progressbar.update(p);
+	if (personBatch.length === maxBatchLength || p === commander.personCount - 1) {
+		dataAssets.forEach(d => {
+			csv.stringify(d.data, {
+				header: true
+			}, (err, data) => {
+				if (err) {
+					console.log(err);
+				}
+				fs.appendFileSync(outputFolder + d.filename, data);
+				d.data = [];
+			});
+		});
+	}
 }
 
 progressbar.update(commander.personCount);
 progressbar.stop();
 
 stopwatch.stop();
-var duration = stopwatch.duration();
+const duration = stopwatch.duration();
 
 console.log('simulation complete: ' + duration.format());

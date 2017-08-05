@@ -1,12 +1,11 @@
-// todo - leverage prediction model to assign mortality
-
-function atropos() {
-  var Death = require('./cdm/death');
-  this.shear = function(person, records) {
-    var death = new Death();
-    death.personId = person.personId;
-    return death;
-  }
+function Atropos() {
+	// Leverage prediction model to assign mortality
+	const Death = require('./cdm/death');
+	this.shear = function (person) {
+		const death = new Death();
+		death.personId = person.personId;
+		return death;
+	};
 }
 
-module.exports = new atropos();
+module.exports = new Atropos();
