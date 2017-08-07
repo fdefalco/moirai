@@ -26,6 +26,10 @@ const visitOccurrenceBatch = [];
 
 const outputFolder = 'simulations/';
 
+if (!fs.existsSync(outputFolder)) {
+	fs.mkdirSync(outputFolder);
+}
+
 // Configure the data assets we're generating so we don't have to repeat code sections
 const dataAssets = [{
 	filename: 'observationPeriod.csv',
@@ -44,9 +48,14 @@ const dataAssets = [{
 // Perhaps warn about overwriting files and add an option to overwrite --overwrite
 dataAssets.forEach(d => {
 	if (fs.existsSync(outputFolder + d.filename)) {
+		console.log('removing existing file ' + d.filename + '...');
 		fs.unlinkSync(outputFolder + d.filename);
 	}
 });
+
+const scanner = require('./dataprints/scanner.js');
+
+const dataprint = scanner.parse('./sample.json');
 
 const progressbar = new progress.Bar({
 	format: 'simulating [{bar}] {percentage}% | {value}/{total}'
@@ -54,7 +63,7 @@ const progressbar = new progress.Bar({
 progressbar.start(commander.personCount, 0);
 
 for (let p = 0; p < commander.personCount; p++) {
-	const person = clotho.spin();
+	const person = clotho.spin(dataprint);
 	personBatch.push(person);
 
 	const observationPeriod = lachesis.measure(person);
@@ -89,3 +98,4 @@ stopwatch.stop();
 const duration = stopwatch.duration();
 
 console.log('simulation complete: ' + duration.format());
+console.log('waiting for file writing operations to complete');

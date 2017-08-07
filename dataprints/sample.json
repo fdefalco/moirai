@@ -1,0 +1,13 @@
+{
+  "ageDist": [{
+    "yearOfBirth": 2000,
+    "risk": 0.5,
+    "meanObservationPeriodDays": 720,
+    "sdObservationPeriodDays": 360
+  }, {
+    "yearOfBirth": 2001,
+    "risk": 0.5,
+    "meanObservationPeriod": 720,
+    "sdObservationPeriod": 360
+  }]
+}
