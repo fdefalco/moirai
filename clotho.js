@@ -6,8 +6,10 @@ function Clotho() {
 	this.spin = function (dataprint) {
 		const person = new Person();
 		person.personId = identifier++;
-		person.genderConceptId = chance.weighted([8507, 8532], [0.55, 0.45]);
-		person.yearOfBirth = chance.weighted(dataprint.birthYear, dataprint.birthYearRisk);
+		const model = chance.weighted(dataprint.model, dataprint.risk);
+		person.genderConceptId = model.genderConceptId;
+		person.yearOfBirth = model.yearOfBirth;
+		person.model = model;
 		return person;
 	};
 }

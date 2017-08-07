@@ -56,7 +56,6 @@ dataAssets.forEach(d => {
 const scanner = require('./dataprints/scanner.js');
 
 const dataprint = scanner.parse('./sample.json');
-
 const progressbar = new progress.Bar({
 	format: 'simulating [{bar}] {percentage}% | {value}/{total}'
 }, progress.Presets.shades_classic);
@@ -74,6 +73,9 @@ for (let p = 0; p < commander.personCount; p++) {
 
 	const death = atropos.shear(person, null);
 	deathBatch.push(death);
+
+	// Remove the model before serializing the record
+	delete person.model;
 
 	progressbar.update(p);
 	if (personBatch.length === maxBatchLength || p === commander.personCount - 1) {

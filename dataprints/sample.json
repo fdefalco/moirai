@@ -1,13 +1,19 @@
 {
-  "ageDist": [{
-    "yearOfBirth": 2000,
+  "profiles": [{
+    "yearOfBirth": 1950,
+    "genderConceptId": 8507,
     "risk": 0.5,
+    "meanDaysToFirstObservation": 14400,
+    "sdDaysToFirstObservation": 365,
     "meanObservationPeriodDays": 720,
     "sdObservationPeriodDays": 360
   }, {
-    "yearOfBirth": 2001,
+    "yearOfBirth": 1951,
+    "genderConceptId": 8532,
     "risk": 0.5,
-    "meanObservationPeriod": 720,
-    "sdObservationPeriod": 360
+    "meanDaysToFirstObservation": 14400,
+    "sdDaysToFirstObservation": 365,
+    "meanObservationPeriodDays": 720,
+    "sdObservationPeriodDays": 360
   }]
 }

@@ -5,16 +5,17 @@ function Scanner() {
 	this.parse = function (dataprint) {
 		const data = require(dataprint);
 		const parsed = {};
-		parsed.birthYear = data.ageDist.map(d => {
-			return d.yearOfBirth;
-		});
-		parsed.birthYearRisk = data.ageDist.map(d => {
+		parsed.risk = data.profiles.map(d => {
 			return d.risk;
 		});
-		parsed.seed = data.ageDist.map(d => {
+		parsed.model = data.profiles.map(d => {
 			return {
+				yearOfBirth: d.yearOfBirth,
+				genderConceptId: d.genderConceptId,
 				meanObservationPeriod: d.meanObservationPeriod,
-				sdObservationPeriodDays: d.sdObservationPeriodDays
+				sdObservationPeriodDays: d.sdObservationPeriodDays,
+				meanDaysToFirstObservation: d.meanDaysToFirstObservation,
+				sdDaysToFirstObservation: d.sdDaysToFirstObservation
 			};
 		});
 		return parsed;
