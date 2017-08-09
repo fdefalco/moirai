@@ -1,6 +1,5 @@
 function Lachesis() {
-	const ObservationPeriod = require('./cdm/observation-period');
-	const VisitOccurrence = require('./cdm/visit-occurrence');
+	const cdm = require('omop-cdm');
 	const moment = require('moment');
 	const chance = require('chance')();
 
@@ -8,30 +7,33 @@ function Lachesis() {
 	let visitOccurrenceId = 10000;
 
 	this.measure = function (person) {
-		const observationPeriod = new ObservationPeriod();
+		const observationPeriod = new cdm.ObservationPeriod();
 		observationPeriod.observationPeriodId = observationPeriodId++;
 		const momentBirth = moment([person.model.yearOfBirth]);
-		const daysFromBirth = chance.normal({
+		const daysFromBirth = Math.max(0,chance.normal({
 			mean: person.model.meanDaysToFirstObservation,
 			dev: person.model.sdDaysToFirstObservation
-		});
-		const daysInObservationPeriod = chance.normal({
+		}));
+		const daysInObservationPeriod = Math.max(0,chance.normal({
 			mean: person.model.meanObservationPeriodDays,
 			dev: person.model.sdObservationPeriodDays
-		});
+		}));
 		momentBirth.add(daysFromBirth, 'd');
 		observationPeriod.observationPeriodStartDate = momentBirth.format('YYYY-MM-DD');
 		momentBirth.add(daysInObservationPeriod, 'd');
 		observationPeriod.observationPeriodEndDate = momentBirth.format('YYYY-MM-DD');
 		observationPeriod.personId = person.personId;
+		person.model.observationPeriod = observationPeriod;
 		return observationPeriod;
 	};
 
 	// Return drug exposures, condition occurrences, procedure occurrences, etc...
 	this.apportionVisits = function (person) {
-		const visitOccurrence = new VisitOccurrence();
+		const visitOccurrence = new cdm.VisitOccurrence();
 		visitOccurrence.personId = person.personId;
 		visitOccurrence.visitOccurrenceId = visitOccurrenceId++;
+		visitOccurrence.visitStartDate = person.model.observationPeriod.observationPeriodStartDate;
+		visitOccurrence.visitEndDate = person.model.observationPeriod.observationPeriodStartDate;
 		return visitOccurrence;
 	};
 }

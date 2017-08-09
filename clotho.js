@@ -1,10 +1,10 @@
 function Clotho() {
 	let identifier = 100000;
 	const chance = require('chance')();
-	const Person = require('./cdm/person');
+	const cdm = require('omop-cdm');
 
 	this.spin = function (dataprint) {
-		const person = new Person();
+		const person = new cdm.Person();
 		person.personId = identifier++;
 		const model = chance.weighted(dataprint.model, dataprint.risk);
 		person.genderConceptId = model.genderConceptId;

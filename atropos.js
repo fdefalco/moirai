@@ -1,9 +1,10 @@
 function Atropos() {
 	// Leverage prediction model to assign mortality
-	const Death = require('./cdm/death');
+	const cdm = require('omop-cdm');
 	this.shear = function (person) {
-		const death = new Death();
+		const death = new cdm.Death();
 		death.personId = person.personId;
+		death.deathDate = person.model.observationPeriod.observationPeriodEndDate;
 		return death;
 	};
 }

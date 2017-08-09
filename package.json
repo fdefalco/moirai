@@ -1,34 +1,35 @@
 {
-  "name": "moirai",
-  "version": "1.0.0",
-  "description": "OMOP CDM V5 data simulator.",
-  "main": "index.js",
-  "bin": {
-    "moirai": "./index.js"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "http://www.github.com/fdefalco/moirai"
-  },
-  "keywords": [
-    "computational",
-    "epidemiology"
-  ],
-  "author": "Frank J DeFalco <fdefalco@its.jnj.com>",
-  "license": "Apache-2.0",
-  "dependencies": {
-    "chance": "^1.0.10",
-    "cli-progress": "^1.4.1",
-    "commander": "^2.11.0",
-    "csv": "^1.1.1",
-    "csv-stringify": "^1.0.4",
-    "durations": "^3.0.0",
-    "moment": "^2.18.1"
-  },
-  "devDependencies": {
-    "xo": "^0.18.2"
-  }
+	"name": "moirai",
+	"version": "1.0.0",
+	"description": "OMOP CDM V5 data simulator.",
+	"main": "index.js",
+	"bin": {
+		"moirai": "./index.js"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "http://www.github.com/fdefalco/moirai"
+	},
+	"keywords": [
+		"computational",
+		"epidemiology"
+	],
+	"author": "Frank J DeFalco <fdefalco@its.jnj.com>",
+	"license": "Apache-2.0",
+	"dependencies": {
+		"chance": "^1.0.10",
+		"cli-progress": "^1.4.1",
+		"commander": "^2.11.0",
+		"csv": "^1.1.1",
+		"csv-stringify": "^1.0.4",
+		"durations": "^3.0.0",
+		"moment": "^2.18.1",
+		"omop-cdm": "git://github.com/fdefalco/omop-cdm-js.git#v5.0.0"
+	},
+	"devDependencies": {
+		"xo": "^0.18.2"
+	}
 }

@@ -59,3 +59,7 @@ typings/
 
 # simulation data
 simulations/*.csv
+
+# dataprints
+dataprints/*.json
+dataprints/*.csv

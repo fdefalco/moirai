@@ -18,7 +18,7 @@ commander
 const stopwatch = durations.stopwatch();
 stopwatch.start();
 
-const maxBatchLength = 1000;
+const maxBatchLength = 10;
 const personBatch = [];
 const observationPeriodBatch = [];
 const deathBatch = [];
@@ -55,7 +55,7 @@ dataAssets.forEach(d => {
 
 const scanner = require('./dataprints/scanner.js');
 
-const dataprint = scanner.parse('./sample.json');
+const dataprint = scanner.parse('./dataprints/sample');
 const progressbar = new progress.Bar({
 	format: 'simulating [{bar}] {percentage}% | {value}/{total}'
 }, progress.Presets.shades_classic);
@@ -78,23 +78,23 @@ for (let p = 0; p < commander.personCount; p++) {
 	delete person.model;
 
 	progressbar.update(p);
-	if (personBatch.length === maxBatchLength || p === commander.personCount - 1) {
-		dataAssets.forEach(d => {
-			csv.stringify(d.data, {
-				header: true
-			}, (err, data) => {
-				if (err) {
-					console.log(err);
-				}
-				fs.appendFileSync(outputFolder + d.filename, data);
-				d.data = [];
-			});
-		});
-	}
 }
 
 progressbar.update(commander.personCount);
 progressbar.stop();
+
+dataAssets.forEach(d => {
+	console.log('appending ' + d.filename);
+	csv.stringify(d.data, {
+		header: false
+	}, (err, data) => {
+		if (err) {
+			console.log(err);
+		}
+		fs.appendFileSync(outputFolder + d.filename, data);
+		d.data = [];
+	});
+});
 
 stopwatch.stop();
 const duration = stopwatch.duration();
