@@ -57,6 +57,9 @@ typings/
 # dotenv environment variables file
 .env
 
+# additional files
+.DS_Store
+
 # simulation data
 simulations/*.csv
 

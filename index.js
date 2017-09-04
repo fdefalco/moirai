@@ -12,17 +12,20 @@ const atropos = require('./atropos.js');
 
 commander
 	.version('0.1.0')
-	.option('--personCount [100]', 'specify how many people default [100]', 100)
+	.option('-p, --personCount [100]', 'specify how many people default [100]', 100)
 	.parse(process.argv);
 
 const stopwatch = durations.stopwatch();
 stopwatch.start();
 
-const maxBatchLength = 10;
 const personBatch = [];
 const observationPeriodBatch = [];
 const deathBatch = [];
 const visitOccurrenceBatch = [];
+const procedureOccurrenceBatch = [];
+const conditionOccurrenceBatch = [];
+const observationBatch = [];
+const drugExposureBatch = [];
 
 const outputFolder = 'simulations/';
 
@@ -43,6 +46,18 @@ const dataAssets = [{
 }, {
 	filename: 'visitOccurrence.csv',
 	data: visitOccurrenceBatch
+}, {
+	filename: 'procedureOccurrence.csv',
+	data: procedureOccurrenceBatch
+}, {
+	filename: 'conditionOccurrence.csv',
+	data: conditionOccurrenceBatch
+}, {
+	filename: 'observation.csv',
+	data: observationBatch
+}, {
+	filename: 'drugExposure.csv',
+	data: drugExposureBatch
 }];
 
 // Perhaps warn about overwriting files and add an option to overwrite --overwrite
@@ -69,6 +84,15 @@ for (let p = 0; p < commander.personCount; p++) {
 	observationPeriodBatch.push(observationPeriod);
 
 	const visitOccurrence = lachesis.apportionVisits(person);
+	// Collect visit data
+	procedureOccurrenceBatch.push.apply(procedureOccurrenceBatch, visitOccurrence.data.procedureOccurrences);
+	conditionOccurrenceBatch.push.apply(conditionOccurrenceBatch, visitOccurrence.data.conditionOccurrences);
+	observationBatch.push.apply(observationBatch, visitOccurrence.data.observations);
+	drugExposureBatch.push.apply(drugExposureBatch, visitOccurrence.data.drugExposures);
+
+	// Remove visit data before serializing
+	delete visitOccurrence.data;
+
 	visitOccurrenceBatch.push(visitOccurrence);
 
 	const death = atropos.shear(person, null);

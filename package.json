@@ -21,7 +21,7 @@
 	"license": "Apache-2.0",
 	"dependencies": {
 		"chance": "^1.0.10",
-		"cli-progress": "^1.4.1",
+		"cli-progress": "^1.5.0",
 		"commander": "^2.11.0",
 		"csv": "^1.1.1",
 		"csv-stringify": "^1.0.4",
